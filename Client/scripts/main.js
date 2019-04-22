@@ -79,10 +79,30 @@
             // pt:   {x:#, y:#}  node position in screen coords
   
             // draw a rectangle centered at pt
-            var w = 40
+            var label = node.name||""
+            var w = ctx.measureText(""+label).width + 10
+            if (!(""+label).match(/^[ \t]*$/)){
+              pt.x = Math.floor(pt.x)
+              pt.y = Math.floor(pt.y)
+            }else{
+              label = null
+            }
+            
             //console.log(node);
+            // ctx.font = "12px Helvetica"
+            // ctx.textAlign = "center"
+            // ctx.fillStyle = "white"
+            //ctx.fillText(node.name||"", pt.x, pt.y+4)
+            
             ctx.fillStyle = (node.data.is_final_state) ? (node.data.color ? node.data.color :"orange") : "black";
             gfx.rect(pt.x-w/2, pt.y-10, w,20, 4, {fill:ctx.fillStyle});
+            //gfx.text(node.name||"", pt.x, pt.y+4);
+            ctx.font = "12px Helvetica"
+            ctx.textAlign = "center"
+            ctx.fillStyle = "white"
+            // ctx.fillStyle = '#333333'
+            ctx.fillText(label||"", pt.x, pt.y+4)
+            ctx.fillText(label||"", pt.x, pt.y+4)
             nodeBoxes[node.name] = [pt.x-w/2, pt.y-11, w, 22];
           })  
           particleSystem.eachEdge(function(edge, pt1, pt2){
@@ -141,7 +161,7 @@
             }
           })
   
-      			
+      		particleSystem.parameters({friction:'1.0'});	
         },
         
         initMouseHandling:function(){
@@ -200,8 +220,8 @@
     }    
   
     $(document).ready(function(){
-      var sys = arbor.ParticleSystem({friction:1, stiffness:600, repulsion:2600}) // create the system with sensible repulsion/stiffness/friction
-      sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
+      var sys = arbor.ParticleSystem() // create the system with sensible repulsion/stiffness/friction
+      sys.parameters({gravity:false,friction:1, stiffness:600, repulsion:2600}) // use center-gravity to make the graph settle nicely (ymmv)
       sys.renderer = Renderer("#viewport") // our newly created renderer will have its .init() method called shortly by sys...
   
       // add some nodes to the graph and watch it go...
@@ -229,7 +249,33 @@
           transition_from : 'p5',
           character : 'd',
           is_final_state : true
-        }]
+        }],
+
+        transitions :[{
+          transition_to : 'p1',
+          transition_from : 'p2',
+          character : 'a',
+          is_final_state : false
+        },
+        {
+          transition_to : 'p3',
+          transition_from : 'p1',
+          character : 'b',
+          is_final_state : false
+        },
+        {
+          transition_to : 'p5',
+          transition_from : 'p3',
+          character : 'c',
+          is_final_state : false
+        },
+        {
+          transition_to : 'p4',
+          transition_from : 'p5',
+          character : 'd',
+          is_final_state : true
+        }],
+        
       };
       var created_edges = [];
       node_graph.dfa.forEach(function(node_transition){
@@ -240,7 +286,33 @@
         created_edges.push(edge);
       });
 
+      
+      document.getElementById('play_graph').addEventListener('click',function(){
+        console.log("Running Tweening ")
+        node_graph= this.node_graph;
+        var sleep = function(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        };
+        sys = this.sys;
+        node_graph.transitions.forEach(async function(node_transition){
+          var transition_from = sys.getNode(node_transition.transition_from) ? sys.getNode(node_transition.transition_from) : sys.addNode(node_transition.transition_from,{is_final_state:node_transition.is_final_state});
+          var transition_to = sys.getNode(node_transition.transition_to) ? sys.getNode(node_transition.transition_to) : sys.addNode(node_transition.transition_to,{is_final_state:node_transition.is_final_state});
+          sys.tweenNode(transition_from,2,{color:'red'})
+          await sleep(2000);
+          console.log("Tweening Node :",node_transition.transition_from)
+          possible_edges = sys.getEdges(transition_from,transition_to);
+          setTimeout(2000);
+          sys.tweenEdge(possible_edges[0],2,{color:'red'})
+          setTimeout(2000);
+          sys.tweenNode(transition_to,2,{color:'red'})
 
+          //TODO : Figure the Transition Tweenning and Changing of colours. 
+
+          //TODO : Figure the mixing of the C++ Transition and DFA Generator Graphs. 
+
+          
+        });
+      }.bind({sys:sys,node_graph:node_graph}));
       // E1 = sys.addEdge('a','b',{name:1})
       // sys.addEdge('a','c',{name:2})
       // sys.addEdge('a','d',{name:3})

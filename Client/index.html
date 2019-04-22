@@ -3,13 +3,16 @@
 <head>
         <link rel="stylesheet" href="style.css" type="text/css">
         <script src='scripts/jquery.min.js'></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css">
         <script src="scripts/arbor.js"></script>
         <script src="scripts/arbor-tween.js"></script>
         <script src="scripts/arbor-graphics.js"></script>
+        <script src="scripts/main.js"></script>
 </head>
 
 <body>
-    <script src="scripts/main.js"></script>
+    <button id='play_graph' on-click="document.generate_graph()" class='btn btn-primary'>Press Me </button>
     <canvas id="viewport" width="800" height="600"></canvas>
 </body>
 
