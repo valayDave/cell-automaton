@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src='scripts/jquery.min.js'></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        type="text/css">
+
+    <script src="scripts/cell.js"></script>
+</head>
+
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow"
+        style="background-color: #313131!important;">
+        <img src="https://1000logos.net/wp-content/uploads/2017/08/ASU-Logo.png" style="height:10%;">
+
+        <div style="width: 100%;text-align: center;">
+            <h2 style="color:white;">Cellular Automaton Demo</h2>
+        </div>
+    </div>
+    <div class="d-flex align-items-stretch justify-content-between">
+        <div class="p-2">
+            <div class='d-flex align-items-stretch justify-content-between'>
+                <div class="p-2">
+                    <h6>Enter Block Size For Each Member in the generation</h6>
+                </div>
+                <div class="p-2 ">
+                    <input type="text" name="X_size_input" id="block_size" placeholder="Block Size">
+                </div>
+                <div class="p-2">
+
+                </div>
+            </div>
+            <div class='d-flex flex-column align-items-stretch justify-content-between'>
+                <div class="p-2">
+                    <div class='d-flex align-items-stretch'>
+                            <div style="padding-left: 0px!important;" class="p-2 ">
+                                    <h6>Select the Simulation</h6>
+                                </div>
+                            <div class="p-2 ">
+                                    <input type="radio" name="animate" id="rule-30" value=True class='rule_btn'> Animate 
+                            </div>
+                            <div class="p-2 ">
+                                    <input type="radio" checked="checked" name="animate" id="rule-30" value=false class='rule_btn'> Static 
+                            </div>        
+                    </div> 
+                </div>
+                <div class="p-2 ">
+                    <input type="radio" name="rule" id="rule-30" value="30" class='rule_btn'> Rule 30
+                </div>
+                <div class="p-2 ">
+                    <input type="radio" name="rule" id="rule-146" value="146" class='rule_btn'> Rule 146
+                </div>
+                <div class="p-2 ">
+                    <input type="radio" name="rule" id="rule-102" value="102" class='rule_btn'> Rule 102
+                </div>
+                <div class="p-2 ">
+                    <input type="radio" name="rule" id="rule-110" value="110" class='rule_btn'> Rule 110
+                </div>
+                <div class="p-2 ">
+                    <input type="radio" name="rule" id="rule-126" value="126" class='rule_btn'> Rule 126
+                </div>
+                <div class="p-2">
+                    <button id='generate_grid_btn' class='btn btn-primary'>Generate Grid</button>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <canvas id="cell_animate" width="800" height="600"></canvas>
+        </div>
+
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-md-6">
+            <button id='play_cell' on-click="document.generate_graph()" class='btn btn-primary'>Press Me </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="cell_animate" width="800" height="600"></canvas>
+        </div>
+    </div> -->
+</body>
+
+</html>
